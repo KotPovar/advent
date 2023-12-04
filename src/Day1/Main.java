@@ -22,7 +22,7 @@ public class Main {
         textToInt.put("nine", 9);
 
         try{
-            File myObj = new File("C:\\Users\\axcho\\Desktop\\advent1_1.txt");
+            File myObj = new File("C:\\Users\\axcho\\Desktop\\advent1.txt");
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()){
                 String fileStr = myReader.nextLine();
@@ -31,7 +31,7 @@ public class Main {
                 int firstIntPlace = 0;
                 int firstCharPlace = 0;
 
-                for (int i = 0; i <= fileStr.length(); i++){
+                for (int i = 0; i < fileStr.length(); i++){
                     if (Character.isDigit(fileStr.charAt(i))){
                         firstInt = Character.getNumericValue(fileStr.charAt(i)) * 10;
                         firstIntPlace = i;
@@ -39,16 +39,15 @@ public class Main {
                     }
                 }
                 for(Map.Entry<String, Integer> entry : textToInt.entrySet()) {
-                    if ((fileStr.indexOf(entry.getKey()) < firstCharPlace | firstCharPlace == 0 ) & fileStr.contains(entry.getKey())) {
+                    if ((fileStr.indexOf(entry.getKey()) <= firstCharPlace | firstCharPlace == 0 ) & fileStr.contains(entry.getKey())) {
                         firstCharPlace = fileStr.indexOf(entry.getKey());
                         firstChar = entry.getValue() * 10;
                     }
                 }
-                if (firstIntPlace > firstCharPlace & firstChar != 0 ) {
-                    sum += firstChar;
-                } else {
-                    sum += firstInt;
-                }
+                if ( firstChar == 0 ) sum += firstInt;
+                else if (firstInt == 0) sum += firstChar;
+                else if (firstIntPlace > firstCharPlace) sum += firstChar;
+                else sum += firstInt;
 
                 firstCharPlace = fileStr.length();
 
@@ -60,16 +59,15 @@ public class Main {
                     }
                 }
                 for(Map.Entry<String, Integer> entry : textToInt.entrySet()) {
-                    if ((fileStr.lastIndexOf(entry.getKey()) < firstCharPlace | firstCharPlace == fileStr.length()) & fileStr.contains(entry.getKey())) {
+                    if ((fileStr.lastIndexOf(entry.getKey()) > firstCharPlace | firstCharPlace == fileStr.length()) & fileStr.contains(entry.getKey())) {
                         firstCharPlace = fileStr.lastIndexOf(entry.getKey());
                         firstChar = entry.getValue();
                     }
                 }
-                if (firstIntPlace < firstCharPlace & firstChar != 0) {
-                    sum += firstChar;
-                } else {
-                    sum += firstInt;
-                }
+                if ( firstChar == 0 ) sum += firstInt;
+                else if (firstInt == 0) sum += firstChar;
+                else if (firstIntPlace < firstCharPlace) sum += firstChar;
+                else sum += firstInt;
                 //System.out.println(fileStr);
             }
             System.out.println(sum);
