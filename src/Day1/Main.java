@@ -2,29 +2,73 @@ package Day1;// Press Shift twice to open the Search Everywhere dialog and type 
 // then press Enter. You can now see whitespace characters in your code.
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
         int sum = 0;
+        HashMap<String, Integer> textToInt = new HashMap<>();
+        textToInt.put("one", 1);
+        textToInt.put("two", 2);
+        textToInt.put("three", 3);
+        textToInt.put("four", 4);
+        textToInt.put("five", 5);
+        textToInt.put("six", 6);
+        textToInt.put("seven", 7);
+        textToInt.put("eight", 8);
+        textToInt.put("nine", 9);
 
         try{
-            File myObj = new File("C:\\Users\\axcho\\Desktop\\advent1.txt");
+            File myObj = new File("C:\\Users\\axcho\\Desktop\\advent1_1.txt");
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()){
                 String fileStr = myReader.nextLine();
-                for (int i = 0; i <= fileStr.length() ;i++){
+                int firstInt = 0;
+                int firstChar = 0;
+                int firstIntPlace = 0;
+                int firstCharPlace = 0;
+
+                for (int i = 0; i <= fileStr.length(); i++){
                     if (Character.isDigit(fileStr.charAt(i))){
-                        sum += Character.getNumericValue(fileStr.charAt(i)) * 10;
+                        firstInt = Character.getNumericValue(fileStr.charAt(i)) * 10;
+                        firstIntPlace = i;
                         break;
                     }
                 }
+                for(Map.Entry<String, Integer> entry : textToInt.entrySet()) {
+                    if ((fileStr.indexOf(entry.getKey()) < firstCharPlace | firstCharPlace == 0 ) & fileStr.contains(entry.getKey())) {
+                        firstCharPlace = fileStr.indexOf(entry.getKey());
+                        firstChar = entry.getValue() * 10;
+                    }
+                }
+                if (firstIntPlace > firstCharPlace & firstChar != 0 ) {
+                    sum += firstChar;
+                } else {
+                    sum += firstInt;
+                }
+
+                firstCharPlace = fileStr.length();
+
                 for ( int i = fileStr.length() - 1; i >= 0; i--){
                     if (Character.isDigit(fileStr.charAt(i))){
-                        sum += Character.getNumericValue(fileStr.charAt(i));
+                        firstInt = Character.getNumericValue(fileStr.charAt(i));
+                        firstIntPlace = i;
                         break;
                     }
+                }
+                for(Map.Entry<String, Integer> entry : textToInt.entrySet()) {
+                    if ((fileStr.lastIndexOf(entry.getKey()) < firstCharPlace | firstCharPlace == fileStr.length()) & fileStr.contains(entry.getKey())) {
+                        firstCharPlace = fileStr.lastIndexOf(entry.getKey());
+                        firstChar = entry.getValue();
+                    }
+                }
+                if (firstIntPlace < firstCharPlace & firstChar != 0) {
+                    sum += firstChar;
+                } else {
+                    sum += firstInt;
                 }
                 //System.out.println(fileStr);
             }
